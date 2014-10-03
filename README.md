@@ -1,7 +1,5 @@
-zl-devenv
-=========
-
 ZL DEV Environment
+=========
 
 ## Installation
 
