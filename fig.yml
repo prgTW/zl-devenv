@@ -43,7 +43,7 @@ mariadb:
 nginx:
     image: dockerfile/nginx
     environment:
-        VIRTUAL_HOST: local.znanylekarz.pl
+        VIRTUAL_HOST: local.*
     volumes:
         - docker/nginx/conf.d:/etc/nginx/conf.d
         - docker/nginx/certs:/etc/nginx/certs
