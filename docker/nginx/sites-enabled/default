@@ -1,0 +1,86 @@
+server {
+    listen 80;
+    server_name _;
+
+    root /var/www/web;
+
+    access_log /var/log/nginx/$host-access.log;
+    error_log  /var/log/nginx/$host-error.log error;
+
+    index app_dev.php index.html index.htm;
+
+    try_files $uri $uri/ @rewrite;
+
+    location @rewrite {
+        rewrite ^/(.*)$ /app_dev.php/$1;
+        autoindex on;
+    }
+
+    location ~ \.php {
+        # try_files $uri =404;
+
+        fastcgi_index app_dev.php;
+        fastcgi_pass 127.0.0.1:9000;
+
+        include fastcgi_params;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+        # This is to properly handle locale guessing from domain
+        # Without this the server name is "local.*" even if You access
+        # http://local.znanylekarz.pl/. Now it's the same as the domain
+        fastcgi_param SERVER_NAME $host;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name _;
+
+    root /var/www/web;
+
+    access_log /var/log/nginx/$host-access.log;
+    error_log  /var/log/nginx/$host-error.log error;
+
+    index app_dev.php index.html index.htm;
+
+    try_files $uri $uri/ @rewrite;
+
+    location @rewrite {
+        rewrite ^/(.*)$ /app_dev.php/$1;
+        autoindex on;
+    }
+
+    location ~ \.php {
+        # try_files $uri =404;
+
+        fastcgi_index app_dev.php;
+        fastcgi_pass 127.0.0.1:9000;
+
+        include fastcgi_params;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+        # This is to properly handle locale guessing from domain
+        # Without this the server name is "local.*" even if You access
+        # http://local.znanylekarz.pl/. Now it's the same as the domain
+        fastcgi_param SERVER_NAME $host;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    ssl_certificate /etc/nginx/certs/insecure-server.crt;
+    ssl_certificate_key /etc/nginx/certs/insecure-server.key;
+    ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+}

@@ -1,0 +1,55 @@
+elasticsearch:
+    image: dockerfile/elasticsearch:latest
+    volumes:
+        - .data/elasticsearch/data:/data
+    expose:
+        - "9200"
+        - "9300"
+
+redis:
+    image: dockerfile/redis:latest
+    volumes:
+        - .data/redis/data:/data
+    expose:
+        - "6379"
+
+mongodb:
+    image: dockerfile/mongodb:latest
+    volumes:
+        - .data/mongodb/data:/data
+    expose:
+        - "27017"
+        - "28017"
+
+beanstalkd:
+    build: docker/beanstalkd
+    volumes:
+        - .data/beanstalkd/data:/data
+    expose:
+        - "11300"
+
+memcached:
+    build: docker/memcached
+    expose:
+        - "11211"
+
+mariadb:
+    image: dockerfile/mariadb
+    volumes:
+        - .data/mariadb/data:/data
+    expose:
+        - "3306"
+
+nginx:
+    image: dockerfile/nginx
+    environment:
+        VIRTUAL_HOST: local.znanylekarz.pl
+    volumes:
+        - docker/nginx/conf.d:/etc/nginx/conf.d
+        - docker/nginx/certs:/etc/nginx/certs
+        - docker/nginx/sites-enabled:/etc/nginx/sites-enabled
+        - .data/nginx/logs:/var/log/nginx
+        - repo:/var/www
+    expose:
+        - "80"
+        - "443"
