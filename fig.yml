@@ -53,3 +53,10 @@ nginx:
     expose:
         - "80"
         - "443"
+    links:
+        - elasticsearch:docplanner_elasticsearch
+        - redis:docplanner_redis
+        - mongodb:docplanner_mongodb
+        - beanstalkd:docplanner_beanstalkd
+        - memcached:docplanner_memcached
+        - mariadb:docplanner_db
