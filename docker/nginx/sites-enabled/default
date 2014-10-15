@@ -81,6 +81,6 @@ server {
 
     ssl_certificate /etc/nginx/certs/insecure-server.crt;
     ssl_certificate_key /etc/nginx/certs/insecure-server.key;
-    ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_ciphers HIGH:!aNULL:!MD5;
 }
