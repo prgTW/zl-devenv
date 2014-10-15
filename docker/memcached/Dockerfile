@@ -9,6 +9,6 @@ RUN \
 
 WORKDIR /data
 
-CMD /usr/bin/memcached -u root -v -m 1024
+CMD /usr/bin/memcached -u root -v -m 64
 
 EXPOSE 11211
